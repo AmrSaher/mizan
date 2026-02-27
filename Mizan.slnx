@@ -1,1 +1,8 @@
-<Solution />
+<Solution>
+  <Project Path="Mizan.API/Mizan.API.csproj" />
+  <Project Path="Mizan.Application/Mizan.Application.csproj" />
+  <Project Path="Mizan.Domain/Mizan.Domain.csproj" />
+  <Project Path="Mizan.Infrastructure/Mizan.Infrastructure.csproj" />
+  <Project Path="Mizan.Infrastructure.Scraper/Mizan.Infrastructure.Scraper.csproj" />
+  <Project Path="Mizan.IoC/Mizan.IoC.csproj" />
+</Solution>

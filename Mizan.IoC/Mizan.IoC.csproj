@@ -6,4 +6,14 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Hangfire.AspNetCore" Version="1.8.23" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Mizan.Application\Mizan.Application.csproj" />
+    <ProjectReference Include="..\Mizan.Infrastructure\Mizan.Infrastructure.csproj" />
+    <ProjectReference Include="..\Mizan.Infrastructure.Scraper\Mizan.Infrastructure.Scraper.csproj" />
+  </ItemGroup>
+
 </Project>
