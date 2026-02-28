@@ -1,19 +1,22 @@
-﻿using Mizan.Domain.Primitives;
+﻿using Mizan.Domain.Enums;
+using Mizan.Domain.Primitives;
 
 namespace Mizan.Domain.Entities.StockDomain
 {
+    // https://www.egx.com.eg/en/CompanyDetails.aspx?ISIN={isin}
     public sealed class StockDailyQuote : BaseEntity, IAggregateRoot
     {
         public long TradedVolume { get; private set; }
-        public long TradedValue { get; private set; }
-        public decimal ClosingPrice { get; private set; }
-        public decimal CashDividends { get; private set; } // L.E./$
-        public long MarketCap { get; private set; }
         public DateOnly CouponPaymentDate { get; private set; }
-        public decimal PriceEarningRatio { get; private set; }
-        public decimal DividendYield { get; private set; }
         public int CouponNumber { get; private set; }
         public DateOnly TradingDate { get; private set; }
+        public decimal PriceEarningRatio { get; private set; }
+        public decimal DividendYield { get; private set; }
+
+        public Money TradedValue { get; private set; }
+        public Money ClosingPrice { get; private set; }
+        public Money CashDividends { get; private set; } // L.E./$
+        public Money MarketCap { get; private set; }
 
         public Guid StockId { get; private set; }
         public Stock Stock { get; }
@@ -28,15 +31,16 @@ namespace Mizan.Domain.Entities.StockDomain
             decimal priceEarningRatio,
             decimal dividendYield,
             int couponNumber,
+            Currency currency,
             DateOnly tradingDate,
             Guid stockId
         )
         {
             SetTradedVolume(tradedVolume);
-            SetTradedValue(tradedValue);
-            SetClosingPrice(closingPrice);
-            SetCashDividends(cashDividends);
-            SetMarketCap(marketCap);
+            SetTradedValue(tradedValue, currency);
+            SetClosingPrice(closingPrice, currency);
+            SetCashDividends(cashDividends, currency);
+            SetMarketCap(marketCap, currency);
             SetCouponPaymentDate(couponPaymentDate);
             SetPriceEarningRatio(priceEarningRatio);
             SetDividendYield(dividendYield);
@@ -50,24 +54,24 @@ namespace Mizan.Domain.Entities.StockDomain
             TradedVolume = tradedVolume;
         }
 
-        public void SetTradedValue(long tradedValue)
+        public void SetTradedValue(long tradedValue, Currency currency)
         {
-            TradedValue = tradedValue;
+            TradedValue = new Money(amount: tradedValue, currency: currency);
         }
 
-        public void SetClosingPrice(decimal closingPrice)
+        public void SetClosingPrice(decimal closingPrice, Currency currency)
         {
-            ClosingPrice = closingPrice;
+            ClosingPrice = new Money(amount: closingPrice, currency: currency);
         }
 
-        public void SetCashDividends(decimal cashDividends)
+        public void SetCashDividends(decimal cashDividends, Currency currency)
         {
-            CashDividends = cashDividends;
+            CashDividends = new Money(amount: cashDividends, currency: currency);
         }
 
-        public void SetMarketCap(long marketCap)
+        public void SetMarketCap(long marketCap, Currency currency)
         {
-            MarketCap = marketCap;
+            MarketCap = new Money(amount: marketCap, currency: currency);
         }
 
         public void SetCouponPaymentDate(DateOnly couponPaymentDate)

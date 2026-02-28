@@ -3,9 +3,12 @@ using Mizan.Domain.Primitives;
 
 namespace Mizan.Domain.Entities.StockDomain
 {
+    // https://www.egx.com.eg/en/ListedStocks.aspx
     public sealed class Stock : BaseEntity, IAggregateRoot
     {
         public string Name { get; private set; }
+        public StockProvider Provider { get; private set; }
+
         public StockBasicData BasicData { get; private set; }
 
         private readonly List<StockDailyQuote> _dailyQuotes = new();
@@ -14,14 +17,20 @@ namespace Mizan.Domain.Entities.StockDomain
         private readonly List<StockIRContact> _irContacts = new();
         public IReadOnlyCollection<StockIRContact> IRContacts => _irContacts.AsReadOnly();
 
-        public Stock(string name)
+        public Stock(string name, StockProvider provider)
         {
             SetName(name);
+            SetProvider(provider);
         }
 
         public void SetName(string name)
         {
             Name = name;
+        }
+
+        public void SetProvider(StockProvider provider)
+        {
+            Provider = provider;
         }
 
         public void SetBasicData(
@@ -30,7 +39,7 @@ namespace Mizan.Domain.Entities.StockDomain
             DateOnly listingDate,
             long listedShares,
             decimal parValue,
-            string currency,
+            Currency currency,
             string securityType,
             StockSector sector
         )

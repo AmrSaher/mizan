@@ -10,11 +10,20 @@ namespace Mizan.Domain.Entities.StockDomain
         public DateOnly ListingDate { get; private set; }
         public long ListedShares { get; private set; }
         public decimal ParValue { get; private set; }
-        public string Currency { get; private set; }
+        public Currency Currency { get; private set; }
         public string SecurityType { get; private set; }
         public StockSector Sector { get; private set; }
 
-        internal StockBasicData(string isinCode, string reutersCode, DateOnly listingDate, long listedShares, decimal parValue, string currency, string securityType, StockSector sector)
+        internal StockBasicData(
+            string isinCode,
+            string reutersCode,
+            DateOnly listingDate,
+            long listedShares,
+            decimal parValue,
+            Currency currency,
+            string securityType,
+            StockSector sector
+        )
         {
             SetISINCode(isinCode);
             SetReutersCode(reutersCode);
@@ -51,7 +60,7 @@ namespace Mizan.Domain.Entities.StockDomain
             ParValue = parValue;
         }
 
-        private void SetCurrency(string currency)
+        private void SetCurrency(Currency currency)
         {
             Currency = currency;
         }

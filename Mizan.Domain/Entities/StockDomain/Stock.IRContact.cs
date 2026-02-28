@@ -2,6 +2,7 @@
 
 namespace Mizan.Domain.Entities.StockDomain
 {
+    // https://www.egx.com.eg/en/ContactPersonDirectory.aspx
     public sealed class StockIRContact : BaseEntity, IAggregateRoot
     {
         public string Name { get; private set; }
