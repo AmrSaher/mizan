@@ -18,11 +18,11 @@ namespace Mizan.API.Controllers
         }
 
         [HttpGet]
-        public async Task<BaseResponse<IEnumerable<FundReadDTO>>> GetFunds()
+        public async Task<BaseResponse<IEnumerable<FundReadDTO>>> GetFunds([FromQuery] FundsFilter filter)
         {
-            var result = await _fundService.GetFunds();
+            var result = await _fundService.GetFunds(filter);
 
-            return BaseResponse<IEnumerable<FundReadDTO>>.Success(result);
+            return result;
         }
 
         [HttpGet("{id:guid}")]
@@ -30,15 +30,15 @@ namespace Mizan.API.Controllers
         {
             var result = await _fundService.GetFund(id);
 
-            return BaseResponse<FundReadDTO>.Success(result);
+            return result;
         }
 
         [HttpGet("lookup")]
-        public async Task<BaseResponse<IEnumerable<FundLookupDTO>>> GetFundLookups([FromQuery] FundLookupsFilter filter)
+        public async Task<PaginatedResponse<IEnumerable<FundLookupDTO>>> GetFundLookups([FromQuery] FundLookupsFilter filter)
         {
             var result = await _fundService.GetFundLookups(filter);
 
-            return BaseResponse<IEnumerable<FundLookupDTO>>.Success(result);
+            return result;
         }
     }
 }

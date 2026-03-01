@@ -1,0 +1,21 @@
+﻿using Ardalis.Specification;
+using Mizan.Domain.Entities.FundDomain;
+using Mizan.Domain.Filters;
+
+namespace Mizan.Domain.Specifications
+{
+    public class FundsSpecification : Specification<Fund>
+    {
+        public FundsSpecification(FundsFilter filter)
+        {
+            Query.AsNoTracking();
+
+            if (!string.IsNullOrEmpty(filter.Name))
+            {
+                Query.Where(x => x.Name.ToLower().Contains(filter.Name.Trim().ToLower()));
+            }
+
+            Query.Skip(filter.Skip!.Value).Take(filter.Take!.Value);
+        }
+    }
+}
