@@ -8,6 +8,8 @@ namespace Mizan.Domain.Entities.FundDomain
         public FundFrequency? SubscriptionFrequency { get; private set; }
         public FundFrequency? RedemptionFrequency { get; private set; }
 
+        private FundLiquidityProfile() { }
+
         internal FundLiquidityProfile(FundFrequency? subscriptionFrequence, FundFrequency? redemptionFrequency)
         {
             SetSubscriptionFrequency(subscriptionFrequence);

@@ -8,6 +8,8 @@ namespace Mizan.Domain.Entities
         public decimal Amount { get; private set; }
         public Currency Currency { get; private set; }
 
+        private Money() { }
+
         internal Money(decimal amount, Currency currency)
         {
             SetAmount(amount);

@@ -21,6 +21,8 @@ namespace Mizan.Domain.Entities.StockDomain
         public Guid StockId { get; private set; }
         public Stock Stock { get; }
 
+        private StockDailyQuote() { }
+
         public StockDailyQuote(
             long tradedVolume,
             long tradedValue,

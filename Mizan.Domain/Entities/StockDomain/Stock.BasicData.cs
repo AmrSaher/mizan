@@ -14,6 +14,8 @@ namespace Mizan.Domain.Entities.StockDomain
         public string SecurityType { get; private set; }
         public StockSector Sector { get; private set; }
 
+        private StockBasicData() { }
+
         internal StockBasicData(
             string isinCode,
             string reutersCode,

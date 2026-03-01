@@ -17,6 +17,8 @@ namespace Mizan.Domain.Entities.StockDomain
         private readonly List<StockIRContact> _irContacts = new();
         public IReadOnlyCollection<StockIRContact> IRContacts => _irContacts.AsReadOnly();
 
+        private Stock() { }
+
         public Stock(string name, StockProvider provider)
         {
             SetName(name);

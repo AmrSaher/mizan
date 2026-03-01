@@ -20,6 +20,8 @@ namespace Mizan.Domain.Entities.FundDomain
         
         public FundLiquidityProfile? Liquidity { get; private set; }
 
+        private Fund() { }
+
         public Fund(
             string name,
             FundType type,

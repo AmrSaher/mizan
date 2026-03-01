@@ -12,6 +12,8 @@ namespace Mizan.Domain.Entities.StockDomain
         public Guid StockId { get; private set; }
         public Stock Stock { get; }
 
+        private StockIRContact() { }
+
         public StockIRContact(string name, string phoneNumber, string email, Guid stockId)
         {
             SetName(name);

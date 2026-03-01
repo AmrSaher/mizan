@@ -6,6 +6,8 @@ namespace Mizan.Domain.Entities.FundDomain
     {
         public string? Value { get; set; }
 
+        private FundTickerSymbol() { }
+
         internal FundTickerSymbol(string? value)
         {
             SetValue(value);
