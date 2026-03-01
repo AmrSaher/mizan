@@ -16,6 +16,8 @@ namespace Mizan.Infrastructure.Persistence.Configurations
                 .IsRequired()
                 .HasMaxLength(200);
 
+            builder.HasIndex(x => x.Name);
+
             builder.Property(x => x.Type)
                 .IsRequired()
                 .HasConversion<string>()

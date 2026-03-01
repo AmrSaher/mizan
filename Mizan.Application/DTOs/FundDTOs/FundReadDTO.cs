@@ -6,6 +6,7 @@ namespace Mizan.Application.DTOs.FundDTOs
 {
     public sealed class FundReadDTO : IInquiryDTO<Fund, FundReadDTO>
     {
+        public Guid Id { get; set; }
         public string Name { get; set; }
         public FundType Type { get; set; }
         public FundProvider Provider { get; set; }
@@ -20,6 +21,7 @@ namespace Mizan.Application.DTOs.FundDTOs
         {
             return new FundReadDTO
             {
+                Id = entity.Id,
                 Name = entity.Name,
                 Type = entity.Type,
                 Provider = entity.Provider,
