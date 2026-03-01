@@ -24,8 +24,4 @@
     <ProjectReference Include="..\Mizan.IoC\Mizan.IoC.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
-
 </Project>
