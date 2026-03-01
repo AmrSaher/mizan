@@ -15,7 +15,12 @@ namespace Mizan.Domain.Specifications
                 Query.Where(x => x.Name.ToLower().Contains(filter.Name.Trim().ToLower()));
             }
 
-            Query.Skip(filter.Skip!.Value).Take(filter.Take!.Value);
+            Query.Skip(filter.Skip!.Value);
+
+            if (filter.Take!.Value > 0)
+            {
+                Query.Take(filter.Take!.Value);
+            }
         }
     }
 }

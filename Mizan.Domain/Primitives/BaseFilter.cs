@@ -7,7 +7,7 @@
         {
             get
             {
-                if (_take.HasValue is false || _take < 0) return 10;
+                if (_take.HasValue is false || _take < 0) return 0;
                 return _take;
             }
             set

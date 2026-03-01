@@ -9,5 +9,7 @@
         PreciousMetals = 5,
         Balanced = 6,
         ETF = 7,
+        CapitalProtected = 8,
+        NONE = 9,
     }
 }

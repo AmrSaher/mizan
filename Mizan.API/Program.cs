@@ -1,8 +1,8 @@
 using Hangfire;
 using Mizan.Application.Interfaces;
-using Mizan.Infrastructure.Scraper;
 using Mizan.IoC;
 using Mizan.API.Middlewares;
+using Mizan.Infrastructure.Scraper.Scrapers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -50,10 +50,19 @@ using (var scope = app.Services.CreateScope())
     //);
 }
 
-//await EGXStocks.Run();
-//await Azimut.Run();
-//await Beltone.Run();
-//await CICapital.Run();
-//await EFGHermes.Run();
+using (var scraperScope = app.Services.CreateScope())
+{
+    var azimutScraper = scraperScope.ServiceProvider.GetRequiredService<AzimutScraper>();
+    var beltoneScraper = scraperScope.ServiceProvider.GetRequiredService<BeltoneScraper>();
+    var ciCapitalScraper = scraperScope.ServiceProvider.GetRequiredService<CICapitalScraper>();
+    var efgHermesScraper = scraperScope.ServiceProvider.GetRequiredService<EFGHermesScraper>();
+    var egxStocksScraper = scraperScope.ServiceProvider.GetRequiredService<EGXStocksScraper>();
+
+    //await azimutScraper.Run();
+    //await beltoneScraper.Run();
+    //await ciCapitalScraper.Run();
+    //await efgHermesScraper.Run();
+    //await egxStocksScraper.Run();
+}
 
 app.Run();
