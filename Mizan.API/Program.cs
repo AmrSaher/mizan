@@ -40,6 +40,10 @@ using (var scope = app.Services.CreateScope())
     //);
 }
 
-await Test.Run();
+//await EGXStocks.Run();
+//await Azimut.Run();
+//await Beltone.Run();
+//await CICapital.Run();
+//await EFGHermes.Run();
 
 app.Run();

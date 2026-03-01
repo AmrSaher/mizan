@@ -2,7 +2,7 @@
 
 namespace Mizan.Infrastructure.Scraper
 {
-    public static class Test
+    public static class EGXStocks
     {
         public static async Task Run()
         {
