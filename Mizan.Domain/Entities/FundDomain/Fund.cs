@@ -15,7 +15,7 @@ namespace Mizan.Domain.Entities.FundDomain
 
         public Money NAV { get; private set; }
 
-        public FundTickerSymbol? RIC { get; private set; }
+        public FundTickerSymbol? RICTicker { get; private set; }
         public FundTickerSymbol? BBGTicker { get; private set; }
         
         public FundLiquidityProfile? Liquidity { get; private set; }
@@ -65,7 +65,7 @@ namespace Mizan.Domain.Entities.FundDomain
 
         public void SetRIC(string? ricTicker)
         {
-            RIC = new FundTickerSymbol(value: ricTicker);
+            RICTicker = new FundTickerSymbol(value: ricTicker);
         }
 
         public void SetBBGTicker(string? bbgTicker)

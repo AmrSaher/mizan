@@ -32,7 +32,7 @@ namespace Mizan.Infrastructure.Persistence.Configurations
                 b.Property(p => p.Currency).HasConversion<string>().HasMaxLength(3);
             });
 
-            builder.OwnsOne(x => x.RIC, b =>
+            builder.OwnsOne(x => x.RICTicker, b =>
             {
                 b.Property(p => p.Value).HasMaxLength(50);
             });
