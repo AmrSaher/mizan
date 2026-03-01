@@ -4,7 +4,7 @@ using Mizan.Domain.Enums;
 
 namespace Mizan.Application.DTOs.FundDTOs
 {
-    public sealed class FundListDTO : IInquiryDTO<Fund, FundListDTO>
+    public sealed class FundReadDTO : IInquiryDTO<Fund, FundReadDTO>
     {
         public string Name { get; set; }
         public FundType Type { get; set; }
@@ -16,9 +16,9 @@ namespace Mizan.Application.DTOs.FundDTOs
         public FundFrequency? SubscriptionFrequency { get; set; }
         public FundFrequency? RedemptionFrequency { get; set; }
 
-        public static FundListDTO FromEntity(Fund entity)
+        public static FundReadDTO FromEntity(Fund entity)
         {
-            return new FundListDTO
+            return new FundReadDTO
             {
                 Name = entity.Name,
                 Type = entity.Type,

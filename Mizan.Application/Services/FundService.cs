@@ -12,16 +12,28 @@ namespace Mizan.Application.Services
             _fundRepo = fundRepo;
         }
 
-        public async Task<IEnumerable<FundListDTO>> GetFunds()
+        public async Task<IEnumerable<FundReadDTO>> GetFunds()
         {
             var funds = await _fundRepo.GetAllAsync();
 
             if (funds == null || funds.Count() == 0)
             {
-                return Enumerable.Empty<FundListDTO>();
+                return Enumerable.Empty<FundReadDTO>();
             }
 
-            return funds.Select(FundListDTO.FromEntity);
+            return funds.Select(FundReadDTO.FromEntity);
+        }
+
+        public async Task<FundReadDTO> GetFund(Guid id)
+        {
+            var fund = await _fundRepo.GetByIdAsync(id);
+
+            if (fund == null)
+            {
+                throw new Exception("Not Found Exception");
+            }
+
+            return FundReadDTO.FromEntity(fund);
         }
     }
 }
