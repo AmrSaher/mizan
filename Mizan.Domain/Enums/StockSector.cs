@@ -14,11 +14,12 @@
         EnergyAndSupportServices = 10,
         TradeAndDistributors = 11,
         ShippingAndTransportationServices = 12,
-        EducationAndServices = 13,
+        EducationServices = 13,
         NonBankFinancialServices = 14,
         ContractingAndConstructionEngineering = 15,
         TextileAndDurables = 16,
         BuildingMaterials = 17,
         PaperAndPackaging = 18,
+        None = 19,
     }
 }
