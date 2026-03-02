@@ -1,14 +1,15 @@
 using Microsoft.EntityFrameworkCore;
+using Ardalis.Specification.EntityFrameworkCore;
 using Mizan.Domain.Entities.StockDomain;
 using Mizan.Domain.Repositories;
 
 namespace Mizan.Infrastructure.Persistence.Repositories
 {
-    public sealed class StockRepository : IStockRepository
+    public sealed class StockRepository : RepositoryBase<Stock>, IStockRepository
     {
         private readonly ApplicationDbContext _dbContext;
 
-        public StockRepository(ApplicationDbContext dbContext)
+        public StockRepository(ApplicationDbContext dbContext) : base(dbContext)
         {
             _dbContext = dbContext;
         }

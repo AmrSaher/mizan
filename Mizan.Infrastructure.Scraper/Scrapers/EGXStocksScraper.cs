@@ -1,10 +1,18 @@
 ﻿using Microsoft.Playwright;
+using Mizan.Domain.Repositories;
 
-namespace Mizan.Infrastructure.Scraper
+namespace Mizan.Infrastructure.Scraper.Scrapers
 {
-    public static class EGXStocks
+    public class EGXStocksScraper
     {
-        public static async Task Run()
+        private readonly IFundRepository _fundRepo;
+
+        public EGXStocksScraper(IFundRepository fundRepo)
+        {
+            _fundRepo = fundRepo;
+        }
+
+        public async Task Run()
         {
             var exitCode = Program.Main(new[] { "install" });
             if (exitCode != 0)

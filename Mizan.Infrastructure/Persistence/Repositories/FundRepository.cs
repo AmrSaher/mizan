@@ -1,14 +1,15 @@
 using Microsoft.EntityFrameworkCore;
+using Ardalis.Specification.EntityFrameworkCore;
 using Mizan.Domain.Entities.FundDomain;
 using Mizan.Domain.Repositories;
 
 namespace Mizan.Infrastructure.Persistence.Repositories
 {
-    public sealed class FundRepository : IFundRepository
+    public sealed class FundRepository : RepositoryBase<Fund>, IFundRepository
     {
         private readonly ApplicationDbContext _dbContext;
 
-        public FundRepository(ApplicationDbContext dbContext)
+        public FundRepository(ApplicationDbContext dbContext) : base(dbContext)
         {
             _dbContext = dbContext;
         }

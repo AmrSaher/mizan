@@ -1,10 +1,20 @@
 ﻿using Microsoft.Playwright;
+using Mizan.Domain.Enums;
+using Mizan.Domain.Repositories;
+using Mizan.Domain.Entities.FundDomain;
 
-namespace Mizan.Infrastructure.Scraper
+namespace Mizan.Infrastructure.Scraper.Scrapers
 {
-    public static class EFGHermes
+    public class BeltoneScraper
     {
-        public static async Task Run()
+        private readonly IFundRepository _fundRepo;
+
+        public BeltoneScraper(IFundRepository fundRepo)
+        {
+            _fundRepo = fundRepo;
+        }
+
+        public async Task Run()
         {
             using var playwright = await Playwright.CreateAsync();
 
@@ -30,41 +40,44 @@ namespace Mizan.Infrastructure.Scraper
             // Inject a script to "delete" the webdriver property
             await page.AddInitScriptAsync("delete Object.getPrototypeOf(navigator).webdriver");
 
-            await page.GotoAsync("https://efgholding.com/en/our-services/mutual-funds", new PageGotoOptions
+            await page.GotoAsync("https://www.beltoneholding.com/the-investment-bank/asset-management", new PageGotoOptions
             {
                 WaitUntil = WaitUntilState.NetworkIdle // Wait for all JS to finish
             });
 
             // Wait for a specific element to load (crucial for JS sites)
-            await page.WaitForSelectorAsync("table.w-full.border-collapse");
+            await page.WaitForSelectorAsync(".table-container");
 
-            var fundTypes = await page.Locator("table tbody").AllAsync();
+            var fundTypes = await page.Locator(".table-container .repeated-body").AllAsync();
 
             int i = 1;
 
             foreach (var fundType in fundTypes)
             {
-                var type = "";
+                FundType type = FundType.NONE;
 
                 switch (i)
                 {
                     case 1:
                     case 2:
-                        type = "Equity";
+                        type = FundType.MoneyMarket;
                         break;
                     case 3:
                     case 4:
-                        type = "Money Market";
+                        type = FundType.Equity;
                         break;
                     case 5:
+                        type = FundType.Balanced;
+                        break;
                     case 6:
-                        type = "Fixed Income";
+                        type = FundType.ETF;
                         break;
                     case 7:
-                        type = "Blended Funds";
-                        break;
                     case 8:
-                        type = "Commodity Funds";
+                        type = FundType.FixedIncome;
+                        break;
+                    case 9:
+                        type = FundType.PreciousMetals;
                         break;
                     default:
                         break;
@@ -76,6 +89,20 @@ namespace Mizan.Infrastructure.Scraper
                 {
                     var name = (await fund.Locator("td:nth-child(1) a").InnerTextAsync()).Trim();
                     decimal nav = decimal.Parse((await fund.Locator("td:nth-child(2)").InnerTextAsync()).Trim());
+
+                    await _fundRepo.AddAsync(new Fund(
+                        name: name,
+                        type: type,
+                        provider: FundProvider.Beltone,
+                        navAmount: nav,
+                        navCurrency: Currency.EGP,
+                        ricTicker: null,
+                        bbgTicker: null,
+                        subscriptionFrequency: FundFrequency.NONE,
+                        redemptionFrequency: FundFrequency.NONE
+                    ));
+
+                    await _fundRepo.SaveChangesAsync();
 
                     Console.WriteLine($"Name: {name}, NAV: {nav}, Type: {type}");
                     Console.WriteLine("-------------------------------------------------------------------------------------------");

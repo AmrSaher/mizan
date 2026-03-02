@@ -1,10 +1,20 @@
 ﻿using Microsoft.Playwright;
+using Mizan.Domain.Repositories;
+using Mizan.Domain.Entities.FundDomain;
+using Mizan.Domain.Enums;
 
-namespace Mizan.Infrastructure.Scraper
+namespace Mizan.Infrastructure.Scraper.Scrapers
 {
-    public static class CICapital
+    public class CICapitalScraper
     {
-        public static async Task Run()
+        private readonly IFundRepository _fundRepo;
+
+        public CICapitalScraper(IFundRepository fundRepo)
+        {
+            _fundRepo = fundRepo;
+        }
+
+        public async Task Run()
         {
             using var playwright = await Playwright.CreateAsync();
 
@@ -74,6 +84,38 @@ namespace Mizan.Infrastructure.Scraper
                 string navS = (await fund.Locator($"td:nth-child({index + 1})").InnerTextAsync()).Trim();
                 navS = string.IsNullOrEmpty(navS) ? "0" : navS;
                 decimal nav = decimal.Parse(navS);
+
+                await _fundRepo.AddAsync(new Fund(
+                    name: name,
+                    type: type switch
+                    {
+                        "Money Market" => FundType.MoneyMarket,
+                        "Fixed Income Funds" => FundType.FixedIncome,
+                        "Capital Protected" => FundType.CapitalProtected,
+                        "Balanced Funds" => FundType.Balanced,
+                        "Equity Funds" => FundType.Equity,
+                        "Islamic Funds" => name switch
+                        {
+                            "Banque Misr Fourth Fund" => FundType.Equity,
+                            "Faisal & CIB Fund (Al Aman)" => FundType.Balanced,
+                            "Sanabel Islamic Fund" => FundType.Equity,
+                            "PBD & Banque du Caire (Al Wefak)" => FundType.Balanced,
+                            "CIAM Shariaa Index Equity Fund (EGX 33)" => FundType.Equity,
+                            _ => FundType.NONE
+                        },
+                        "Gold Fund" => FundType.PreciousMetals,
+                        _ => FundType.NONE
+                    },
+                    provider: FundProvider.CICapital,
+                    navAmount: nav,
+                    navCurrency: Currency.EGP,
+                    ricTicker: null,
+                    bbgTicker: null,
+                    subscriptionFrequency: FundFrequency.NONE,
+                    redemptionFrequency: FundFrequency.NONE
+                ));
+
+                await _fundRepo.SaveChangesAsync();
 
                 Console.WriteLine($"Name: {name}, Type: {type}, NAV: {nav}");
                 Console.WriteLine("-------------------------------------------------------------------------------------------");

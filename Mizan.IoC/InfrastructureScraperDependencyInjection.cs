@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Mizan.Application.Interfaces;
 using Mizan.Infrastructure.Scraper.Services;
 using Hangfire;
+using Mizan.Infrastructure.Scraper.Scrapers;
 
 namespace Mizan.IoC
 {
@@ -17,9 +18,15 @@ namespace Mizan.IoC
                 .SetDataCompatibilityLevel(CompatibilityLevel.Version_180)
                 .UseSimpleAssemblyNameTypeSerializer()
                 .UseRecommendedSerializerSettings()
-                .UseSqlServerStorage(configuration.GetConnectionString("DefaultConnection")));
+                .UseSqlServerStorage(configuration.GetConnectionString("DevConnection")));
 
             services.AddHangfireServer();
+
+            services.AddScoped<AzimutScraper>();
+            services.AddScoped<BeltoneScraper>();
+            services.AddScoped<CICapitalScraper>();
+            services.AddScoped<EFGHermesScraper>();
+            services.AddScoped<EGXStocksScraper>();
 
             return services;
         }

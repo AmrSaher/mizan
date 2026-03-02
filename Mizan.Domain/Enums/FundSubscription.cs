@@ -6,5 +6,6 @@
         Weekly = 2,
         Monthly = 3,
         Closed = 4,
+        NONE = 5,
     }
 }

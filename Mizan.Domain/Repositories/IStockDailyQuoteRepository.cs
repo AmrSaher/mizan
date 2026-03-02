@@ -1,8 +1,9 @@
+using Ardalis.Specification;
 using Mizan.Domain.Entities.StockDomain;
 
 namespace Mizan.Domain.Repositories
 {
-    public interface IStockDailyQuoteRepository
+    public interface IStockDailyQuoteRepository : IRepositoryBase<StockDailyQuote>
     {
         Task<StockDailyQuote?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
         Task<IEnumerable<StockDailyQuote>> GetAllAsync(CancellationToken cancellationToken = default);

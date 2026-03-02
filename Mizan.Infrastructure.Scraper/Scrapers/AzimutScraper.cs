@@ -1,10 +1,20 @@
 ﻿using Microsoft.Playwright;
+using Mizan.Domain.Entities.FundDomain;
+using Mizan.Domain.Enums;
+using Mizan.Domain.Repositories;
 
-namespace Mizan.Infrastructure.Scraper
+namespace Mizan.Infrastructure.Scraper.Scrapers
 {
-    public static class Azimut
+    public class AzimutScraper
     {
-        public static async Task Run()
+        private readonly IFundRepository _fundRepo;
+
+        public AzimutScraper(IFundRepository fundRepo)
+        {
+            _fundRepo = fundRepo;
+        }
+
+        public async Task Run()
         {
             using var playwright = await Playwright.CreateAsync();
 
@@ -45,12 +55,48 @@ namespace Mizan.Infrastructure.Scraper
                 var name = (await fund.Locator(".row.zeromargin.top5.rowalign .col-6.zeropadding .row.zeromargin.rowalign div:nth-child(1) p").InnerTextAsync()).Trim();
                 var currency = (await fund.Locator(".row.zeromargin.top5.rowalign .col-6.zeropadding .row.zeromargin.rowalign div:nth-child(2) p").InnerTextAsync()).Trim();
                 var type = (await fund.Locator(".row.zeromargin.top5.rowalign .col-6.zeropadding .row.zeromargin.rowalign div:nth-child(3) p").InnerTextAsync()).Trim();
-                var ric = (await fund.Locator(".row.zeromargin.top5.rowalign .col-6.zeropadding .row.zeromargin.rowalign div:nth-child(4) p").InnerTextAsync()).Trim();
-                var bbg = (await fund.Locator(".row.zeromargin.top5.rowalign .col-4.zeropadding .row.zeromargin.rowalign div:nth-child(1) p").InnerTextAsync()).Trim();
+                var ric = (await fund.Locator(".row.zeromargin.top5.rowalign .col-6.zeropadding .row.zeromargin.rowalign div:nth-child(4) p").InnerTextAsync()).Trim() ?? null;
+                var bbg = (await fund.Locator(".row.zeromargin.top5.rowalign .col-4.zeropadding .row.zeromargin.rowalign div:nth-child(1) p").InnerTextAsync()).Trim() ?? null;
                 var subscription = (await fund.Locator(".row.zeromargin.top5.rowalign .col-4.zeropadding .row.zeromargin.rowalign div:nth-child(2) p").InnerTextAsync()).Trim();
                 var redemption = (await fund.Locator(".row.zeromargin.top5.rowalign .col-4.zeropadding .row.zeromargin.rowalign div:nth-child(3) p").InnerTextAsync()).Trim();
                 decimal nav = decimal.Parse((await fund.Locator(".row.zeromargin.top5.rowalign .col-4.zeropadding .row.zeromargin.rowalign div:nth-child(4) p").InnerTextAsync()).Trim().Split(' ')[0]);
-                
+
+                await _fundRepo.AddAsync(new Fund(
+                    name: name,
+                    ricTicker: ric,
+                    bbgTicker: bbg,
+                    provider: FundProvider.Azimut,
+                    navAmount: nav,
+                    navCurrency: currency == "EGP" ? Currency.EGP : Currency.USD,
+                    type: type switch
+                    {
+                        "Fixed Income" => FundType.FixedIncome,
+                        "Real Estate" => FundType.RealEstate,
+                        "Equity" => FundType.Equity,
+                        "Money Market" => FundType.MoneyMarket,
+                        "Precious Metals" => FundType.PreciousMetals,
+                        "Balanced" => FundType.Balanced,
+                        _ => FundType.NONE
+                    },
+                    subscriptionFrequency: subscription switch
+                    {
+                        "Weekly" => FundFrequency.Weekly,
+                        "Closed" => FundFrequency.Closed,
+                        "Daily" => FundFrequency.Daily,
+                        _ => FundFrequency.NONE
+                    },
+                    redemptionFrequency: redemption switch
+                    {
+                        "Weekly" => FundFrequency.Weekly,
+                        "Closed" => FundFrequency.Closed,
+                        "Daily" => FundFrequency.Daily,
+                        "Monthly" => FundFrequency.Monthly,
+                        _ => FundFrequency.NONE
+                    }
+                ));
+
+                await _fundRepo.SaveChangesAsync();
+
                 Console.WriteLine($"Name: {name}, Currency: {currency}, Type: {type}, RIC: {ric}, BBG: {bbg}, Subscription: {subscription}, Redemption: {redemption}, NAV: {nav}");
                 Console.WriteLine("-------------------------------------------------------------------------------------------");
             }
