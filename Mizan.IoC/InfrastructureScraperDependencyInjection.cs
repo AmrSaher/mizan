@@ -18,7 +18,7 @@ namespace Mizan.IoC
                 .SetDataCompatibilityLevel(CompatibilityLevel.Version_180)
                 .UseSimpleAssemblyNameTypeSerializer()
                 .UseRecommendedSerializerSettings()
-                .UseSqlServerStorage(configuration.GetConnectionString("DefaultConnection")));
+                .UseSqlServerStorage(configuration.GetConnectionString("DevConnection")));
 
             services.AddHangfireServer();
 

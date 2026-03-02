@@ -12,7 +12,7 @@ namespace Mizan.IoC
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+                options.UseSqlServer(configuration.GetConnectionString("DevConnection")));
 
             services.AddScoped<IStockRepository, StockRepository>();
             services.AddScoped<IStockDailyQuoteRepository, StockDailyQuoteRepository>();

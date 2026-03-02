@@ -55,8 +55,8 @@ namespace Mizan.Infrastructure.Scraper.Scrapers
                 var name = (await fund.Locator(".row.zeromargin.top5.rowalign .col-6.zeropadding .row.zeromargin.rowalign div:nth-child(1) p").InnerTextAsync()).Trim();
                 var currency = (await fund.Locator(".row.zeromargin.top5.rowalign .col-6.zeropadding .row.zeromargin.rowalign div:nth-child(2) p").InnerTextAsync()).Trim();
                 var type = (await fund.Locator(".row.zeromargin.top5.rowalign .col-6.zeropadding .row.zeromargin.rowalign div:nth-child(3) p").InnerTextAsync()).Trim();
-                var ric = (await fund.Locator(".row.zeromargin.top5.rowalign .col-6.zeropadding .row.zeromargin.rowalign div:nth-child(4) p").InnerTextAsync()).Trim();
-                var bbg = (await fund.Locator(".row.zeromargin.top5.rowalign .col-4.zeropadding .row.zeromargin.rowalign div:nth-child(1) p").InnerTextAsync()).Trim();
+                var ric = (await fund.Locator(".row.zeromargin.top5.rowalign .col-6.zeropadding .row.zeromargin.rowalign div:nth-child(4) p").InnerTextAsync()).Trim() ?? null;
+                var bbg = (await fund.Locator(".row.zeromargin.top5.rowalign .col-4.zeropadding .row.zeromargin.rowalign div:nth-child(1) p").InnerTextAsync()).Trim() ?? null;
                 var subscription = (await fund.Locator(".row.zeromargin.top5.rowalign .col-4.zeropadding .row.zeromargin.rowalign div:nth-child(2) p").InnerTextAsync()).Trim();
                 var redemption = (await fund.Locator(".row.zeromargin.top5.rowalign .col-4.zeropadding .row.zeromargin.rowalign div:nth-child(3) p").InnerTextAsync()).Trim();
                 decimal nav = decimal.Parse((await fund.Locator(".row.zeromargin.top5.rowalign .col-4.zeropadding .row.zeromargin.rowalign div:nth-child(4) p").InnerTextAsync()).Trim().Split(' ')[0]);
